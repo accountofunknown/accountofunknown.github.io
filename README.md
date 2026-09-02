@@ -1,3 +1,7 @@
-*no bio, no face, no résumé*
+no bio, no face, no résumé — just the commits.
 
-*_This account isn't tied to a name or a résumé. It's just a place to leave work where it can be found — small tools, experiments, and whatever else is worth keeping._*
+
+*This is a working account, not a personal one — a space for brainstorming, random musings, and experiments that don't need a name attached to them.*
+
+
+*Expect tiny projects and tools, ideas tested out loud, and notes from learning things in public. The point isn't polish — it's sharing what's being figured out along the way, however unfinished.*
