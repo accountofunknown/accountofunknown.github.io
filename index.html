@@ -88,6 +88,24 @@
 
   @keyframes stamp{ to{ transform: scaleX(1); } }
 
+  .redact.reveal{
+    background: transparent;
+    color: var(--ink);
+  }
+
+  .redact.glitch-active{
+    animation: glitchShake 0.15s steps(2, end);
+    text-shadow: -2px 0 var(--accent), 2px 0 rgba(23,22,15,0.45);
+  }
+
+  @keyframes glitchShake{
+    0%   { transform: translate(0,0) skewX(0deg); clip-path: inset(0 0 0 0); }
+    25%  { transform: translate(-3px,1px) skewX(-4deg); clip-path: inset(15% 0 35% 0); }
+    50%  { transform: translate(2px,-1px) skewX(3deg); clip-path: inset(40% 0 5% 0); }
+    75%  { transform: translate(-2px,0) skewX(-2deg); clip-path: inset(5% 0 20% 0); }
+    100% { transform: translate(0,0) skewX(0deg); clip-path: inset(0 0 0 0); }
+  }
+
   .tagline{
     font-family: 'JetBrains Mono', monospace;
     font-size: 14px;
@@ -172,7 +190,7 @@
 
   <main>
     <div class="hero">
-      <h1>I build things.<br>My name is <span class="redact" aria-label="withheld">unknown</span>.</h1>
+      <h1>I build things.<br>My name is <span class="redact" id="redactSpan" aria-label="withheld">unknown</span>.</h1>
       <p class="tagline">no bio, no face, no résumé — just the commits.</p>
     </div>
 
@@ -180,8 +198,8 @@
 
     <section>
       <h2>about</h2>
-      <p>This is a working account, not a personal one. What gets built here matters more than who built it, so the name stays off the page.</p>
-      <p>Expect small tools, half-finished experiments, and the occasional thing worth keeping. Nothing here is a résumé — it's just a place to leave the work where it can be found.</p>
+      <p>This is a working account, not a personal one — a space for brainstorming, random musings, and experiments that don't need a name attached to them.</p>
+      <p>Expect tiny projects and tools, ideas tested out loud, and notes from learning things in public. The point isn't polish — it's sharing what's being figured out along the way, however unfinished.</p>
     </section>
   </main>
 
@@ -191,6 +209,44 @@
   </footer>
 
 </div>
+
+<script>
+(function(){
+  var el = document.getElementById('redactSpan');
+  if(!el) return;
+
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduceMotion) return; // stays on the plain redacted "unknown" already in the markup
+
+  var GLITCH_MS = 150;
+
+  function glitchTo(text, reveal, cb){
+    el.classList.add('glitch-active');
+    setTimeout(function(){
+      el.classList.remove('glitch-active');
+      el.textContent = text;
+      el.setAttribute('aria-label', reveal ? text : 'withheld');
+      el.classList.toggle('reveal', reveal);
+      if(cb) cb();
+    }, GLITCH_MS);
+  }
+
+  // Let the initial stamp-in animation finish and settle first.
+  setTimeout(function(){
+    setTimeout(function(){
+      glitchTo('* [Not Required]', true, function(){
+        setTimeout(function(){
+          glitchTo('[Unknown]', true, function(){
+            setTimeout(function(){
+              glitchTo('unknown', false);
+            }, 700);
+          });
+        }, 700);
+      });
+    }, 1700);
+  }, 900);
+})();
+</script>
 
 </body>
 </html>
