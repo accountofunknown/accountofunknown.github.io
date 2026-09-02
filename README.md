@@ -1,5 +1,5 @@
 Hello,
-This Is [Account Of Unknown].(https://accountofunknown.github.io/)
+This Is [Account Of Unknown](https://accountofunknown.github.io/).
 
 _*no bio, no face, no résumé — just the commits.*_
 
