@@ -149,6 +149,50 @@ a:focus-visible{
   color: var(--ink-soft);
 }
 
+/* ---------- hero + redaction/glitch effect (shared by homepage & 404) ---------- */
+.hero h1{
+  font-size: clamp(2.1rem, 6vw, 3.2rem);
+  font-weight: 600;
+  line-height: 1.18;
+  letter-spacing: -0.01em;
+  margin: 0 0 22px;
+}
+
+.redact{
+  display: inline-block;
+  background: var(--redact);
+  color: var(--redact);
+  border-radius: 2px;
+  padding: 0 6px;
+  user-select: none;
+}
+
+.redact.stamp-in{
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: stamp 0.5s cubic-bezier(.6,0,.2,1) 0.35s forwards;
+}
+
+@keyframes stamp{ to{ transform: scaleX(1); } }
+
+.redact.reveal{
+  background: transparent;
+  color: var(--ink);
+}
+
+.redact.glitch-active{
+  animation: glitchShake 0.15s steps(2, end);
+  text-shadow: -2px 0 var(--accent), 2px 0 rgba(23,22,15,0.45);
+}
+
+@keyframes glitchShake{
+  0%   { transform: translate(0,0) skewX(0deg); clip-path: inset(0 0 0 0); }
+  25%  { transform: translate(-3px,1px) skewX(-4deg); clip-path: inset(15% 0 35% 0); }
+  50%  { transform: translate(2px,-1px) skewX(3deg); clip-path: inset(40% 0 5% 0); }
+  75%  { transform: translate(-2px,0) skewX(-2deg); clip-path: inset(5% 0 20% 0); }
+  100% { transform: translate(0,0) skewX(0deg); clip-path: inset(0 0 0 0); }
+}
+
 /* ---------- blog: listing page ---------- */
 .blog-intro{
   font-size: 1.05rem;
