@@ -24,8 +24,9 @@
 
   <main>
     <div class="hero">
-      <h1>This page is <span class="redact stamp-in" id="errorCode" aria-label="redacted">▉▉▉</span>.</h1>
-      <p class="tagline">nothing here — wrong link, moved page, or it never existed.</p>
+      <h1>Error Code: <span class="redact reveal glitch-loop" id="errorNumber" aria-label="404">404</span></h1>
+      <p class="tagline">This page <span class="redact stamp-in" id="pageState" aria-label="redacted">▉▉▉▉▉▉</span></p>
+      <p class="tagline" style="margin-top: 10px;">Some things stay unknown on purpose — this might just be one of them.</p>
     </div>
 
     <hr class="rule">
@@ -46,43 +47,80 @@
 
 <script>
 (function(){
-  var el = document.getElementById('errorCode');
-  if(!el) return;
-
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(reduceMotion) return; // stays on the plain redacted block, no animation
-
-  var GLITCH_MS = 150;
 
   function randBetween(min, max){
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  function glitchTo(text, reveal){
-    el.classList.add('glitch-active');
-    setTimeout(function(){
-      el.classList.remove('glitch-active');
-      el.textContent = text;
-      el.setAttribute('aria-label', reveal ? ('http ' + text) : 'redacted');
-      el.classList.toggle('reveal', reveal);
-    }, GLITCH_MS);
+  var GLITCH_MS = 150;
+
+  /* ---- looping glitch shake on the "404" itself ---- */
+  var numberEl = document.getElementById('errorNumber');
+  if(numberEl && !reduceMotion){
+    (function shakeLoop(){
+      setTimeout(function(){
+        numberEl.classList.add('glitch-active');
+        setTimeout(function(){
+          numberEl.classList.remove('glitch-active');
+        }, GLITCH_MS);
+        shakeLoop();
+      }, randBetween(1800, 4200));
+    })();
   }
 
-  function cycle(){
-    glitchTo('404', true);
+  /* ---- redacted phrase cycling through the description line ---- */
+  var wordEl = document.getElementById('pageState');
+  if(wordEl && !reduceMotion){
+    var phrases = [
+      'is not here.',
+      "doesn't exist.",
+      'is missing.',
+      'relocated.',
+      'was removed.',
+      'is invisible.',
+      'stays redacted.',
+      'vanished.',
+      'went dark.',
+      'was withheld.',
+      'is untraceable.',
+      'is unlisted.',
+      'was erased.'
+    ];
+    var lastIndex = -1;
 
-    var holdTime = randBetween(500, 1400);
+    function glitchTo(text, reveal){
+      wordEl.classList.add('glitch-active');
+      setTimeout(function(){
+        wordEl.classList.remove('glitch-active');
+        wordEl.textContent = text;
+        wordEl.setAttribute('aria-label', reveal ? text : 'redacted');
+        wordEl.classList.toggle('reveal', reveal);
+      }, GLITCH_MS);
+    }
+
+    function nextPhrase(){
+      var i;
+      do { i = randBetween(0, phrases.length - 1); } while(i === lastIndex && phrases.length > 1);
+      lastIndex = i;
+      return phrases[i];
+    }
+
+    function cycle(){
+      glitchTo(nextPhrase(), true);
+
+      var holdTime = randBetween(1000, 2200);
+      setTimeout(function(){
+        glitchTo('▉▉▉▉▉▉', false);
+        var restTime = randBetween(1500, 3800);
+        setTimeout(cycle, restTime);
+      }, holdTime);
+    }
+
     setTimeout(function(){
-      glitchTo('▉▉▉', false);
-      var restTime = randBetween(1800, 5000);
-      setTimeout(cycle, restTime);
-    }, holdTime);
+      setTimeout(cycle, randBetween(1000, 2200));
+    }, 900);
   }
-
-  // let the initial stamp-in animation settle, then start the random loop
-  setTimeout(function(){
-    setTimeout(cycle, randBetween(1200, 3000));
-  }, 900);
 })();
 </script>
 
