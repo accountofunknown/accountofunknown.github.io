@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 — accountofunknown</title>
+<meta name="description" content="Page not found.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+
+<div class="frame">
+
+  <header>
+    <a class="mark" href="/">accountofunknown</a>
+    <div class="header-meta">
+      <a class="nav-link" href="/weblog/">weblog</a>
+      <span class="path">~/404</span>
+    </div>
+  </header>
+
+  <main>
+    <div class="hero">
+      <h1>This page is <span class="redact stamp-in" id="errorCode" aria-label="redacted">▉▉▉</span>.</h1>
+      <p class="tagline">nothing here — wrong link, moved page, or it never existed.</p>
+    </div>
+
+    <hr class="rule">
+
+    <section>
+      <h2>try instead</h2>
+      <p><a class="back-link" href="/" style="margin-bottom:0;">&larr; back to the hub</a></p>
+      <p><a class="back-link" href="/weblog/" style="margin-bottom:0;">&larr; browse the weblog</a></p>
+    </section>
+  </main>
+
+  <footer>
+    <a href="https://github.com/accountofunknown">github.com/accountofunknown</a>
+    <span class="stamp-note">est. 2026</span>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  var el = document.getElementById('errorCode');
+  if(!el) return;
+
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduceMotion) return; // stays on the plain redacted block, no animation
+
+  var codes = ['404', '403', '500', '502', '410', '400'];
+  var GLITCH_MS = 150;
+
+  function randBetween(min, max){
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  function glitchTo(text, reveal){
+    el.classList.add('glitch-active');
+    setTimeout(function(){
+      el.classList.remove('glitch-active');
+      el.textContent = text;
+      el.setAttribute('aria-label', reveal ? ('http ' + text) : 'redacted');
+      el.classList.toggle('reveal', reveal);
+    }, GLITCH_MS);
+  }
+
+  function cycle(){
+    var code = codes[randBetween(0, codes.length - 1)];
+    glitchTo(code, true);
+
+    var holdTime = randBetween(500, 1400);
+    setTimeout(function(){
+      glitchTo('▉▉▉', false);
+      var restTime = randBetween(1800, 5000);
+      setTimeout(cycle, restTime);
+    }, holdTime);
+  }
+
+  // let the initial stamp-in animation settle, then start the random loop
+  setTimeout(function(){
+    setTimeout(cycle, randBetween(1200, 3000));
+  }, 900);
+})();
+</script>
+
+</body>
+</html>
