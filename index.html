@@ -9,47 +9,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/style.css">
-<style>
-  .hero h1{
-    font-size: clamp(2.1rem, 6vw, 3.2rem);
-    font-weight: 600;
-    line-height: 1.18;
-    letter-spacing: -0.01em;
-    margin: 0 0 22px;
-  }
-
-  .redact{
-    display: inline-block;
-    background: var(--redact);
-    color: var(--redact);
-    border-radius: 2px;
-    padding: 0 6px;
-    transform: scaleX(0);
-    transform-origin: left;
-    animation: stamp 0.5s cubic-bezier(.6,0,.2,1) 0.35s forwards;
-    user-select: none;
-  }
-
-  @keyframes stamp{ to{ transform: scaleX(1); } }
-
-  .redact.reveal{
-    background: transparent;
-    color: var(--ink);
-  }
-
-  .redact.glitch-active{
-    animation: glitchShake 0.15s steps(2, end);
-    text-shadow: -2px 0 var(--accent), 2px 0 rgba(23,22,15,0.45);
-  }
-
-  @keyframes glitchShake{
-    0%   { transform: translate(0,0) skewX(0deg); clip-path: inset(0 0 0 0); }
-    25%  { transform: translate(-3px,1px) skewX(-4deg); clip-path: inset(15% 0 35% 0); }
-    50%  { transform: translate(2px,-1px) skewX(3deg); clip-path: inset(40% 0 5% 0); }
-    75%  { transform: translate(-2px,0) skewX(-2deg); clip-path: inset(5% 0 20% 0); }
-    100% { transform: translate(0,0) skewX(0deg); clip-path: inset(0 0 0 0); }
-  }
-</style>
 </head>
 <body>
 
@@ -65,7 +24,7 @@
 
   <main>
     <div class="hero">
-      <h1>My name is <span class="redact" id="redactSpan" aria-label="withheld">unknown</span>.</h1>
+      <h1>My name is <span class="redact stamp-in" id="redactSpan" aria-label="withheld">unknown</span>.</h1>
       <p class="tagline">no bio, no face, no résumé — just the commits.</p>
     </div>
 
